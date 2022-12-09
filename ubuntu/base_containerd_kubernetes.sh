@@ -1,7 +1,6 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "$0"  )" && pwd  )"
-bash $DIR/20_04_containerd.sh
+export DEBIAN_FRONTEND=noninteractive
 sudo apt-get install -y apt-transport-https ca-certificates curl
 sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
@@ -15,7 +14,9 @@ sudo apt-get update
 sudo apt-get install -y helm
 # modprobe
 sudo modprobe overlay
+echo "overlay" > /etc/modules-load.d/overlay.conf
 sudo modprobe br_netfilter
+echo "br_netfilter" > /etc/modules-load.d/br_netfilter.conf
 echo "net.bridge.bridge-nf-call-ip6tables=1" >> /etc/sysctl.d/kubernetes.conf
 echo "net.bridge.bridge-nf-call-iptables=1" >> /etc/sysctl.d/kubernetes.conf
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/kubernetes.conf

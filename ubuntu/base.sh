@@ -14,3 +14,9 @@ echo "alias ..='cd ..'" >> /etc/bash.bashrc
 echo "alias ...='cd ../..'" >> /etc/bash.bashrc
 echo "alias tailf='tail -f'" >> /etc/bash.bashrc
 echo "set nu" >> /etc/vim/vimrc
+sudo apt-get install -y openjdk-17-jdk
+wget https://github.com/alibaba/arthas/releases/download/arthas-all-3.6.6/arthas-bin.zip
+mkdir -p /usr/local/lib/arthas
+unzip arthas-bin.zip -d /usr/local/lib/arthas
+rm -rf arthas-bin.zip
+echo "alias arthas='java -jar /usr/local/lib/arthas/arthas-boot.jar'" >> /etc/.bashrc
