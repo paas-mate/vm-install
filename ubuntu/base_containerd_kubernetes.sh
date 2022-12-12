@@ -1,6 +1,8 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "$0"  )" && pwd  )"
 export DEBIAN_FRONTEND=noninteractive
+sudo apt-get install -y containerd
 sudo apt-get install -y apt-transport-https ca-certificates curl
 sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
@@ -20,5 +22,14 @@ echo "br_netfilter" > /etc/modules-load.d/br_netfilter.conf
 echo "net.bridge.bridge-nf-call-ip6tables=1" >> /etc/sysctl.d/kubernetes.conf
 echo "net.bridge.bridge-nf-call-iptables=1" >> /etc/sysctl.d/kubernetes.conf
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/kubernetes.conf
+sudo sysctl --system
 # pre download kubernetes images
-kubeadm config images list | xargs ctr images pull
+kubeadm config images pull
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+# modify /etc/containerd/config.toml sandbox_image to kubeadm config images
+systemctl restart containerd
+wget -q https://github.com/Shoothzj/vm-dashboard/releases/download/latest/vm-dashboard.zip
+mv dist /opt/vm-dashboard
+rm -rf vm-dashboard.zip
+cp $DIR/vm-dashboard.service /etc/systemd/system/vm-dashboard.service

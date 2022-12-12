@@ -3,6 +3,7 @@
 export DEBIAN_FRONTEND=noninteractive
 sudo apt-get install -y bridge-utils
 sudo apt-get install -y cmake
+sudo apt-get install -y clang
 sudo apt-get install -y linux-tools-$(uname -r) linux-headers-$(uname -r)
 sudo apt-get install -y perf-tools-unstable
 sudo apt-get install -y libbpfcc
@@ -19,4 +20,4 @@ wget https://github.com/alibaba/arthas/releases/download/arthas-all-3.6.6/arthas
 mkdir -p /usr/local/lib/arthas
 unzip arthas-bin.zip -d /usr/local/lib/arthas
 rm -rf arthas-bin.zip
-echo "alias arthas='java -jar /usr/local/lib/arthas/arthas-boot.jar'" >> /etc/.bashrc
+echo "alias arthas='java -jar /usr/local/lib/arthas/arthas-boot.jar'" >> /etc/bash.bashrc
